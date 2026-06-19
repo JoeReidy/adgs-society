@@ -101,7 +101,7 @@
                 var name = row[nameKey];
                 var score = parseInt(row[scoreKey]) || 0;
 
-                if (name) {
+                if (name !== undefined && name !== "") {
                     if (!players[name]) players[name] = { name: name, total: 0, holes: 0 };
                     players[name].total += score;
                     players[name].holes++;
