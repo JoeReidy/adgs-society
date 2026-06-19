@@ -135,7 +135,8 @@
                 var timestamp = data.getValue(r, timestampCol);
 
                 if (name === "" || name === "null" || name === "undefined") continue;
-                if (hole < 1 || hole > NUM_HOLES) continue;
+                if (isNaN(hole) || hole < 1 || hole > 18 || hole !== Math.floor(hole)) continue;
+                if (isNaN(shots) || shots < 1) continue;
 
                 if (!players[name]) {
                     players[name] = { name: name, holes: {} };
@@ -162,18 +163,9 @@
             });
             leaderboard.sort(function(a, b) { return a.total - b.total; });
 
-            // Find max hole number actually used
-            var maxHole = 0;
-            for (var i = 0; i < leaderboard.length; i++) {
-                for (var h = 1; h <= NUM_HOLES; h++) {
-                    if (leaderboard[i].holes[h] && h > maxHole) maxHole = h;
-                }
-            }
-            if (maxHole === 0) maxHole = 1;
-
-            // Render table
+            // Render table - always show all 18 holes
             var html = '<table><tr><th class="pos">Pos</th><th>Player</th>';
-            for (var h = 1; h <= maxHole; h++) {
+            for (var h = 1; h <= NUM_HOLES; h++) {
                 html += '<th>' + h + '</th>';
             }
             html += '<th>Total</th><th>Thru</th></tr>';
@@ -181,7 +173,7 @@
             for (var i = 0; i < leaderboard.length; i++) {
                 var p = leaderboard[i];
                 html += '<tr><td class="pos">' + (i + 1) + '</td><td class="player-name">' + p.name + '</td>';
-                for (var h = 1; h <= maxHole; h++) {
+                for (var h = 1; h <= NUM_HOLES; h++) {
                     if (p.holes[h]) {
                         html += '<td>' + p.holes[h].shots + '</td>';
                     } else {
