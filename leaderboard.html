@@ -25,7 +25,6 @@
         table {
             border-collapse: collapse;
             width: 100%;
-            max-width: 600px;
             margin: 0 auto;
             background: white;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -34,18 +33,23 @@
             background-color: #38761d;
             color: white;
             font-weight: bold;
-            padding: 10px 12px;
-            text-align: left;
+            padding: 8px 6px;
+            text-align: center;
+            font-size: 12px;
         }
         td {
             border: 1px solid #ddd;
-            padding: 8px 12px;
-            text-align: left;
+            padding: 6px;
+            text-align: center;
+            font-size: 12px;
         }
         tr:nth-child(even) { background-color: #f2f2f2; }
         tr:hover { background-color: #e8f5e9; }
-        .pos { width: 40px; text-align: center; font-weight: bold; }
-        .score { text-align: center; font-weight: bold; }
+        .pos { font-weight: bold; }
+        .player-name { text-align: left; font-weight: bold; padding-left: 10px; }
+        .total { font-weight: bold; background-color: #e8f5e9; }
+        .thru { color: #666; font-size: 11px; }
+        .no-score { color: #ccc; }
         .refresh-info {
             text-align: center;
             color: #999;
@@ -60,6 +64,9 @@
         }
         .loading { text-align: center; padding: 40px; color: #666; }
         .error { text-align: center; padding: 40px; color: #c00; }
+        @media (max-width: 600px) {
+            th, td { padding: 4px 3px; font-size: 10px; }
+        }
     </style>
     <script src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
@@ -72,6 +79,7 @@
 
     <script>
         var SHEET_ID = new URLSearchParams(window.location.search).get("sheet") || "YOUR_SHEET_ID_HERE";
+        var NUM_HOLES = 18;
 
         google.charts.load("current");
         google.charts.setOnLoadCallback(function() {
@@ -103,40 +111,85 @@
             }
 
             // Find columns by label
+            var timestampCol = 0;
             var playerCol = -1;
-            var shotCol = -1;
             var holeCol = -1;
+            var shotCol = -1;
             for (var c = 0; c < numCols; c++) {
                 var label = data.getColumnLabel(c).toLowerCase();
                 if (label.indexOf("player") >= 0 || label.indexOf("name") >= 0) playerCol = c;
-                if (label.indexOf("shot") >= 0 || label.indexOf("score") >= 0) shotCol = c;
                 if (label.indexOf("hole") >= 0) holeCol = c;
+                if (label.indexOf("shot") >= 0 || label.indexOf("score") >= 0) shotCol = c;
+                if (label.indexOf("timestamp") >= 0 || label.indexOf("time") >= 0) timestampCol = c;
             }
             if (playerCol < 0) playerCol = 1;
+            if (holeCol < 0) holeCol = 2;
             if (shotCol < 0) shotCol = numCols - 1;
 
-            // Aggregate scores per player
+            // Build scores: for each player+hole, keep only the most recent entry
             var players = {};
             for (var r = 0; r < numRows; r++) {
                 var name = String(data.getValue(r, playerCol));
+                var hole = Number(data.getValue(r, holeCol)) || 0;
                 var shots = Number(data.getValue(r, shotCol)) || 0;
+                var timestamp = data.getValue(r, timestampCol);
 
-                if (name !== "" && name !== "null" && name !== "undefined") {
-                    if (!players[name]) players[name] = { name: name, total: 0, holes: 0 };
-                    players[name].total += shots;
-                    players[name].holes++;
+                if (name === "" || name === "null" || name === "undefined") continue;
+                if (hole < 1 || hole > NUM_HOLES) continue;
+
+                if (!players[name]) {
+                    players[name] = { name: name, holes: {} };
+                }
+
+                var existing = players[name].holes[hole];
+                if (!existing || timestamp >= existing.timestamp) {
+                    players[name].holes[hole] = { shots: shots, timestamp: timestamp };
                 }
             }
 
-            // Sort lowest total first (stroke play)
-            var leaderboard = Object.keys(players).map(function(k) { return players[k]; });
+            // Calculate totals and sort
+            var leaderboard = Object.keys(players).map(function(k) {
+                var p = players[k];
+                var total = 0;
+                var holesPlayed = 0;
+                for (var h = 1; h <= NUM_HOLES; h++) {
+                    if (p.holes[h]) {
+                        total += p.holes[h].shots;
+                        holesPlayed++;
+                    }
+                }
+                return { name: p.name, holes: p.holes, total: total, holesPlayed: holesPlayed };
+            });
             leaderboard.sort(function(a, b) { return a.total - b.total; });
 
+            // Find max hole number actually used
+            var maxHole = 0;
+            for (var i = 0; i < leaderboard.length; i++) {
+                for (var h = 1; h <= NUM_HOLES; h++) {
+                    if (leaderboard[i].holes[h] && h > maxHole) maxHole = h;
+                }
+            }
+            if (maxHole === 0) maxHole = 1;
+
             // Render table
-            var html = '<table><tr><th class="pos">Pos</th><th>Player</th><th class="score">Shots</th><th class="score">Thru</th></tr>';
+            var html = '<table><tr><th class="pos">Pos</th><th>Player</th>';
+            for (var h = 1; h <= maxHole; h++) {
+                html += '<th>' + h + '</th>';
+            }
+            html += '<th>Total</th><th>Thru</th></tr>';
+
             for (var i = 0; i < leaderboard.length; i++) {
                 var p = leaderboard[i];
-                html += '<tr><td class="pos">' + (i + 1) + '</td><td>' + p.name + '</td><td class="score">' + p.total + '</td><td class="score">' + p.holes + ' holes</td></tr>';
+                html += '<tr><td class="pos">' + (i + 1) + '</td><td class="player-name">' + p.name + '</td>';
+                for (var h = 1; h <= maxHole; h++) {
+                    if (p.holes[h]) {
+                        html += '<td>' + p.holes[h].shots + '</td>';
+                    } else {
+                        html += '<td class="no-score">-</td>';
+                    }
+                }
+                html += '<td class="total">' + p.total + '</td>';
+                html += '<td class="thru">' + p.holesPlayed + '</td></tr>';
             }
             html += "</table>";
 
