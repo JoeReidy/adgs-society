@@ -61,6 +61,7 @@
         .loading { text-align: center; padding: 40px; color: #666; }
         .error { text-align: center; padding: 40px; color: #c00; }
     </style>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
     <h1>ADGS Live Leaderboard</h1>
@@ -70,81 +71,78 @@
     <div class="refresh-info">Auto-refreshes every 30 seconds</div>
 
     <script>
-        // CONFIGURE: Pass sheet ID as URL param e.g. leaderboard.html?sheet=YOUR_ID
-        const SHEET_ID = new URLSearchParams(window.location.search).get("sheet") || "YOUR_SHEET_ID_HERE";
-        const CSV_URL = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:csv";
+        var SHEET_ID = new URLSearchParams(window.location.search).get("sheet") || "YOUR_SHEET_ID_HERE";
 
-        function parseCSV(csv) {
-            const lines = csv.trim().split("\n");
-            if (lines.length < 2) return [];
-
-            const headers = lines[0].split(",").map(function(h) { return h.replace(/"/g, "").trim(); });
-            const rows = [];
-
-            for (var i = 1; i < lines.length; i++) {
-                var values = lines[i].match(/("[^"]*"|[^,]*)/g).map(function(v) { return v.replace(/"/g, "").trim(); });
-                var row = {};
-                headers.forEach(function(h, idx) { row[h] = values[idx] || ""; });
-                rows.push(row);
-            }
-            return rows;
-        }
-
-        function aggregateScores(rows) {
-            var players = {};
-            rows.forEach(function(row) {
-                var keys = Object.keys(row);
-                var nameKey = keys.find(function(k) { var l = k.toLowerCase(); return l.indexOf("name") >= 0 || l.indexOf("player") >= 0; }) || keys[1];
-                var scoreKey = keys.find(function(k) { var l = k.toLowerCase(); return l.indexOf("score") >= 0 || l.indexOf("point") >= 0 || l.indexOf("shot") >= 0; }) || keys[keys.length - 1];
-                var holeKey = keys.find(function(k) { return k.toLowerCase().indexOf("hole") >= 0; });
-
-                var name = row[nameKey];
-                var score = parseInt(row[scoreKey]) || 0;
-
-                if (name !== undefined && name !== "") {
-                    if (!players[name]) players[name] = { name: name, total: 0, holes: 0 };
-                    players[name].total += score;
-                    players[name].holes++;
-                }
-            });
-
-            return Object.values(players).sort(function(a, b) { return a.total - b.total; });
-        }
+        google.charts.load("current");
+        google.charts.setOnLoadCallback(function() {
+            fetchAndRender();
+            setInterval(fetchAndRender, 30000);
+        });
 
         function fetchAndRender() {
-            fetch(CSV_URL)
-                .then(function(response) {
-                    if (!response.ok) throw new Error("Failed to fetch");
-                    return response.text();
-                })
-                .then(function(csv) {
-                    var rows = parseCSV(csv);
-
-                    if (rows.length === 0) {
-                        document.getElementById("leaderboard").innerHTML = '<div class="loading">No scores yet - waiting for submissions...</div>';
-                        return;
-                    }
-
-                    var leaderboard = aggregateScores(rows);
-
-                    var tableHTML = '<table><tr><th class="pos">Pos</th><th>Player</th><th class="score">Shots</th><th class="score">Thru</th></tr>';
-
-                    leaderboard.forEach(function(player, idx) {
-                        tableHTML += '<tr><td class="pos">' + (idx + 1) + '</td><td>' + player.name + '</td><td class="score">' + player.total + '</td><td class="score">' + player.holes + ' holes</td></tr>';
-                    });
-
-                    tableHTML += "</table>";
-                    document.getElementById("leaderboard").innerHTML = tableHTML;
-                    document.getElementById("lastUpdate").textContent = "Last updated: " + new Date().toLocaleTimeString();
-                })
-                .catch(function(err) {
-                    document.getElementById("leaderboard").innerHTML = '<div class="error">Could not load scores. Check the sheet is published.</div>';
-                    console.error(err);
-                });
+            var query = new google.visualization.Query(
+                "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq"
+            );
+            query.setQuery("select *");
+            query.send(handleResponse);
         }
 
-        fetchAndRender();
-        setInterval(fetchAndRender, 30000);
+        function handleResponse(response) {
+            if (response.isError()) {
+                document.getElementById("leaderboard").innerHTML = '<div class="error">Error: ' + response.getMessage() + '</div>';
+                return;
+            }
+
+            var data = response.getDataTable();
+            var numRows = data.getNumberOfRows();
+            var numCols = data.getNumberOfColumns();
+
+            if (numRows === 0) {
+                document.getElementById("leaderboard").innerHTML = '<div class="loading">No scores yet - waiting for submissions...</div>';
+                return;
+            }
+
+            // Find columns by label
+            var playerCol = -1;
+            var shotCol = -1;
+            var holeCol = -1;
+            for (var c = 0; c < numCols; c++) {
+                var label = data.getColumnLabel(c).toLowerCase();
+                if (label.indexOf("player") >= 0 || label.indexOf("name") >= 0) playerCol = c;
+                if (label.indexOf("shot") >= 0 || label.indexOf("score") >= 0) shotCol = c;
+                if (label.indexOf("hole") >= 0) holeCol = c;
+            }
+            if (playerCol < 0) playerCol = 1;
+            if (shotCol < 0) shotCol = numCols - 1;
+
+            // Aggregate scores per player
+            var players = {};
+            for (var r = 0; r < numRows; r++) {
+                var name = String(data.getValue(r, playerCol));
+                var shots = Number(data.getValue(r, shotCol)) || 0;
+
+                if (name !== "" && name !== "null" && name !== "undefined") {
+                    if (!players[name]) players[name] = { name: name, total: 0, holes: 0 };
+                    players[name].total += shots;
+                    players[name].holes++;
+                }
+            }
+
+            // Sort lowest total first (stroke play)
+            var leaderboard = Object.keys(players).map(function(k) { return players[k]; });
+            leaderboard.sort(function(a, b) { return a.total - b.total; });
+
+            // Render table
+            var html = '<table><tr><th class="pos">Pos</th><th>Player</th><th class="score">Shots</th><th class="score">Thru</th></tr>';
+            for (var i = 0; i < leaderboard.length; i++) {
+                var p = leaderboard[i];
+                html += '<tr><td class="pos">' + (i + 1) + '</td><td>' + p.name + '</td><td class="score">' + p.total + '</td><td class="score">' + p.holes + ' holes</td></tr>';
+            }
+            html += "</table>";
+
+            document.getElementById("leaderboard").innerHTML = html;
+            document.getElementById("lastUpdate").textContent = "Last updated: " + new Date().toLocaleTimeString();
+        }
     </script>
 </body>
 </html>
