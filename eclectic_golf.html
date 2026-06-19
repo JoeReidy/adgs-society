@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADGS Eclectic Golf 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0;
+            max-width: none;
+            border: 1px solid black !important;
+            
+        }
+        td, th {
+            border: 1px solid black !important;
+            padding: 6px 8px;
+            text-align: center;
+            font-size: 12px;
+            
+        }
+        .green-header {
+            background-color: #38761d !important;
+            color: white !important;
+            font-weight: bold;
+        }
+        .number {
+            text-align: right;
+        }
+        .total-score {
+            font-weight: bold;
+        }
+        /* Responsive design */
+        @media (max-width: 600px) {
+            table {
+                font-size: 10px;
+            }
+            td, th {
+                padding: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <table>
+<thead>
+<tr>
+<th class="green-header">Firstname</th>
+<th class="green-header">Surname</th>
+<th class="green-header">Hole 1</th>
+<th class="green-header">Hole 2</th>
+<th class="green-header">Hole 3</th>
+<th class="green-header">Hole 4</th>
+<th class="green-header">Hole 5</th>
+<th class="green-header">Hole 6</th>
+<th class="green-header">Hole 7</th>
+<th class="green-header">Hole 8</th>
+<th class="green-header">Hole 9</th>
+<th class="green-header">Hole 10</th>
+<th class="green-header">Hole 11</th>
+<th class="green-header">Hole 12</th>
+<th class="green-header">Hole 13</th>
+<th class="green-header">Hole 14</th>
+<th class="green-header">Hole 15</th>
+<th class="green-header">Hole 16</th>
+<th class="green-header">Hole 17</th>
+<th class="green-header">Hole 18</th>
+<th class="green-header">Total</th>
+<th class="green-header">Rounds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>John</td>
+<td>Dunlea</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td class="total-score">46</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Peter</td>
+<td>Meehan</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td class="total-score">45</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Karl</td>
+<td>Buckley</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td class="total-score">43</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Jack</td>
+<td>Moore</td>
+<td>0</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>4</td>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td class="total-score">43</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Mike</td>
+<td>Kennedy</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td class="total-score">42</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Keith</td>
+<td>Kilgallen</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td class="total-score">42</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Brendan</td>
+<td>O'Dowd</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>3</td>
+<td>2</td>
+<td>4</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>4</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td class="total-score">42</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Pat</td>
+<td>Mahon</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td class="total-score">41</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Diarmuid</td>
+<td>Hogan</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td class="total-score">40</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Stephen</td>
+<td>Ryan</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>4</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td class="total-score">40</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Niall</td>
+<td>McKeown</td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td class="total-score">39</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Andreas</td>
+<td>Callanan</td>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>0</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td class="total-score">39</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Matthew</td>
+<td>Gannon</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td class="total-score">38</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Tim</td>
+<td>Egan</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>0</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td class="total-score">38</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Pat</td>
+<td>Sheahan</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td class="total-score">37</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Ray</td>
+<td>Brick</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td class="total-score">37</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Sam</td>
+<td>Trimble</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+<td class="total-score">36</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Barry</td>
+<td>Kinsella</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td class="total-score">36</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Mike</td>
+<td>Roche</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td class="total-score">35</td>
+<td>3</td>
+</tr>
+<tr>
+<td>John</td>
+<td>Purcell</td>
+<td>3</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td class="total-score">35</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Kieran</td>
+<td>Tracey</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td class="total-score">34</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Vincent</td>
+<td>Corbett</td>
+<td>3</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>3</td>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td class="total-score">34</td>
+<td>2</td>
+</tr>
+<tr>
+<td>John</td>
+<td>Geary</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td class="total-score">34</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Michael</td>
+<td>Carroll</td>
+<td>2</td>
+<td>4</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td class="total-score">34</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Fintan</td>
+<td>Leamy</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>0</td>
+<td>3</td>
+<td>3</td>
+<td>0</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td class="total-score">33</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Denis</td>
+<td>Giltenane</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>0</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td class="total-score">33</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Sean</td>
+<td>O'Donoghue</td>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td class="total-score">31</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Sean</td>
+<td>MacSweeney</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td class="total-score">31</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Joe</td>
+<td>Reidy</td>
+<td>3</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td class="total-score">31</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Mike</td>
+<td>Sweeney</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>0</td>
+<td class="total-score">31</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Mike</td>
+<td>Mulqueen</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td class="total-score">30</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Dominic</td>
+<td>Fitzgerald</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>4</td>
+<td>2</td>
+<td class="total-score">29</td>
+<td>1</td>
+</tr>
+<tr>
+<td>John</td>
+<td>Cleary</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td class="total-score">28</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Tadhg</td>
+<td>Moynihan</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td class="total-score">27</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Declan</td>
+<td>Kearns</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>3</td>
+<td class="total-score">26</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Pushkar</td>
+<td>Nigam</td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td class="total-score">26</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Eamon</td>
+<td>Ryan</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td class="total-score">26</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Luke</td>
+<td>Gannon</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td class="total-score">25</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Jim</td>
+<td>Nagle</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td class="total-score">25</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Vincent</td>
+<td>Neylon</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td class="total-score">24</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Paul</td>
+<td>O'Brien</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>0</td>
+<td>3</td>
+<td class="total-score">24</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Tom</td>
+<td>Sayers</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td class="total-score">24</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Stefan</td>
+<td>Gouws</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td class="total-score">19</td>
+<td>1</td>
+</tr>
+<tr>
+<td>John-A</td>
+<td>Cleary</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td class="total-score">19</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Mark</td>
+<td>Boyle</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td class="total-score">19</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Gerard</td>
+<td>Maloney</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td class="total-score">18</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Colm</td>
+<td>Ronan</td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>3</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td class="total-score">16</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Paul</td>
+<td>Sweeney</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td class="total-score">15</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Mike</td>
+<td>Leech</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td class="total-score">15</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
