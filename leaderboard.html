@@ -94,20 +94,21 @@
             var players = {};
             rows.forEach(function(row) {
                 var keys = Object.keys(row);
-                var nameKey = keys.find(function(k) { return k.toLowerCase().indexOf("name") >= 0 || k.toLowerCase().indexOf("player") >= 0; }) || keys[1];
-                var scoreKey = keys.find(function(k) { return k.toLowerCase().indexOf("score") >= 0 || k.toLowerCase().indexOf("point") >= 0; }) || keys[2];
+                var nameKey = keys.find(function(k) { var l = k.toLowerCase(); return l.indexOf("name") >= 0 || l.indexOf("player") >= 0; }) || keys[1];
+                var scoreKey = keys.find(function(k) { var l = k.toLowerCase(); return l.indexOf("score") >= 0 || l.indexOf("point") >= 0 || l.indexOf("shot") >= 0; }) || keys[keys.length - 1];
+                var holeKey = keys.find(function(k) { return k.toLowerCase().indexOf("hole") >= 0; });
 
                 var name = row[nameKey];
                 var score = parseInt(row[scoreKey]) || 0;
 
                 if (name) {
-                    if (!players[name]) players[name] = { name: name, total: 0, entries: 0 };
+                    if (!players[name]) players[name] = { name: name, total: 0, holes: 0 };
                     players[name].total += score;
-                    players[name].entries++;
+                    players[name].holes++;
                 }
             });
 
-            return Object.values(players).sort(function(a, b) { return b.total - a.total; });
+            return Object.values(players).sort(function(a, b) { return a.total - b.total; });
         }
 
         function fetchAndRender() {
@@ -126,10 +127,10 @@
 
                     var leaderboard = aggregateScores(rows);
 
-                    var tableHTML = '<table><tr><th class="pos">Pos</th><th>Player</th><th class="score">Score</th><th class="score">Entries</th></tr>';
+                    var tableHTML = '<table><tr><th class="pos">Pos</th><th>Player</th><th class="score">Shots</th><th class="score">Thru</th></tr>';
 
                     leaderboard.forEach(function(player, idx) {
-                        tableHTML += '<tr><td class="pos">' + (idx + 1) + '</td><td>' + player.name + '</td><td class="score">' + player.total + '</td><td class="score">' + player.entries + '</td></tr>';
+                        tableHTML += '<tr><td class="pos">' + (idx + 1) + '</td><td>' + player.name + '</td><td class="score">' + player.total + '</td><td class="score">' + player.holes + ' holes</td></tr>';
                     });
 
                     tableHTML += "</table>";
