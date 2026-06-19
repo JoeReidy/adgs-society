@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADGS Live Leaderboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+        h1 {
+            color: #38761d;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        th {
+            background-color: #38761d;
+            color: white;
+            font-weight: bold;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        tr:hover { background-color: #e8f5e9; }
+        .pos { width: 40px; text-align: center; font-weight: bold; }
+        .score { text-align: center; font-weight: bold; }
+        .refresh-info {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+        .last-update {
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+        .loading { text-align: center; padding: 40px; color: #666; }
+        .error { text-align: center; padding: 40px; color: #c00; }
+    </style>
+</head>
+<body>
+    <h1>ADGS Live Leaderboard</h1>
+    <div class="subtitle">Weekend Away 2026</div>
+    <div class="last-update" id="lastUpdate"></div>
+    <div id="leaderboard"><div class="loading">Loading scores...</div></div>
+    <div class="refresh-info">Auto-refreshes every 30 seconds</div>
+
+    <script>
+        // CONFIGURE: Pass sheet ID as URL param e.g. leaderboard.html?sheet=YOUR_ID
+        const SHEET_ID = new URLSearchParams(window.location.search).get("sheet") || "YOUR_SHEET_ID_HERE";
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:csv";
+
+        function parseCSV(csv) {
+            const lines = csv.trim().split("\n");
+            if (lines.length < 2) return [];
+
+            const headers = lines[0].split(",").map(function(h) { return h.replace(/"/g, "").trim(); });
+            const rows = [];
+
+            for (var i = 1; i < lines.length; i++) {
+                var values = lines[i].match(/("[^"]*"|[^,]*)/g).map(function(v) { return v.replace(/"/g, "").trim(); });
+                var row = {};
+                headers.forEach(function(h, idx) { row[h] = values[idx] || ""; });
+                rows.push(row);
+            }
+            return rows;
+        }
+
+        function aggregateScores(rows) {
+            var players = {};
+            rows.forEach(function(row) {
+                var keys = Object.keys(row);
+                var nameKey = keys.find(function(k) { return k.toLowerCase().indexOf("name") >= 0 || k.toLowerCase().indexOf("player") >= 0; }) || keys[1];
+                var scoreKey = keys.find(function(k) { return k.toLowerCase().indexOf("score") >= 0 || k.toLowerCase().indexOf("point") >= 0; }) || keys[2];
+
+                var name = row[nameKey];
+                var score = parseInt(row[scoreKey]) || 0;
+
+                if (name) {
+                    if (!players[name]) players[name] = { name: name, total: 0, entries: 0 };
+                    players[name].total += score;
+                    players[name].entries++;
+                }
+            });
+
+            return Object.values(players).sort(function(a, b) { return b.total - a.total; });
+        }
+
+        function fetchAndRender() {
+            fetch(CSV_URL)
+                .then(function(response) {
+                    if (!response.ok) throw new Error("Failed to fetch");
+                    return response.text();
+                })
+                .then(function(csv) {
+                    var rows = parseCSV(csv);
+
+                    if (rows.length === 0) {
+                        document.getElementById("leaderboard").innerHTML = '<div class="loading">No scores yet - waiting for submissions...</div>';
+                        return;
+                    }
+
+                    var leaderboard = aggregateScores(rows);
+
+                    var tableHTML = '<table><tr><th class="pos">Pos</th><th>Player</th><th class="score">Score</th><th class="score">Entries</th></tr>';
+
+                    leaderboard.forEach(function(player, idx) {
+                        tableHTML += '<tr><td class="pos">' + (idx + 1) + '</td><td>' + player.name + '</td><td class="score">' + player.total + '</td><td class="score">' + player.entries + '</td></tr>';
+                    });
+
+                    tableHTML += "</table>";
+                    document.getElementById("leaderboard").innerHTML = tableHTML;
+                    document.getElementById("lastUpdate").textContent = "Last updated: " + new Date().toLocaleTimeString();
+                })
+                .catch(function(err) {
+                    document.getElementById("leaderboard").innerHTML = '<div class="error">Could not load scores. Check the sheet is published.</div>';
+                    console.error(err);
+                });
+        }
+
+        fetchAndRender();
+        setInterval(fetchAndRender, 30000);
+    </script>
+</body>
+</html>
