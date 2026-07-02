@@ -113,46 +113,55 @@
             // Find columns by label
             var timestampCol = 0;
             var playerCol = -1;
-            var holeCols = {}; // maps hole number -> column index
+            var holeGroupCol = -1;
+            var scoreCols = []; // ordered: [A], [B], [C]
             for (var c = 0; c < numCols; c++) {
                 var label = data.getColumnLabel(c).trim();
                 var labelLower = label.toLowerCase();
                 if (labelLower.indexOf("player") >= 0 || labelLower.indexOf("name") >= 0) playerCol = c;
                 if (labelLower.indexOf("timestamp") >= 0 || labelLower.indexOf("time") >= 0) timestampCol = c;
-                // Grid format: "Front 9 [1]", "Back 9 [10]", etc. — extract number from brackets
-                var bracketMatch = label.match(/\[(\d+)\]/);
+                if (labelLower.indexOf("hole") >= 0 && label.indexOf("[") < 0) holeGroupCol = c;
+                // Score columns: "Scores [A]", "Scores [B]", "Scores [C]"
+                var bracketMatch = label.match(/\[([A-C])\]/i);
                 if (bracketMatch) {
-                    var holeNum = parseInt(bracketMatch[1], 10);
-                    if (holeNum >= 1 && holeNum <= 18 && !holeCols[holeNum]) {
-                        holeCols[holeNum] = c;
-                    }
+                    var idx = bracketMatch[1].toUpperCase().charCodeAt(0) - 65; // A=0, B=1, C=2
+                    scoreCols[idx] = c;
                 }
             }
             if (playerCol < 0) playerCol = 1;
+            if (holeGroupCol < 0) holeGroupCol = 2;
 
-            // Build scores: for each player+hole, keep only the most recent entry
+            // Build scores: parse hole group "1-3" and map A/B/C scores to hole numbers
             var players = {};
             for (var r = 0; r < numRows; r++) {
                 var name = String(data.getValue(r, playerCol));
                 var timestamp = data.getValue(r, timestampCol);
+                var group = String(data.getValue(r, holeGroupCol));
 
                 if (name === "" || name === "null" || name === "undefined") continue;
+
+                // Parse group like "4-6" to get starting hole
+                var parts = group.split("-");
+                if (parts.length !== 2) continue;
+                var startHole = parseInt(parts[0], 10);
+                if (isNaN(startHole) || startHole < 1 || startHole > 18) continue;
 
                 if (!players[name]) {
                     players[name] = { name: name, holes: {} };
                 }
 
-                // Read each hole column from the grid
-                for (var h = 1; h <= NUM_HOLES; h++) {
-                    if (holeCols[h] === undefined) continue;
-                    var val = data.getValue(r, holeCols[h]);
+                // Map each score column to the corresponding hole
+                for (var i = 0; i < 3; i++) {
+                    if (scoreCols[i] === undefined) continue;
+                    var val = data.getValue(r, scoreCols[i]);
                     if (val === null || val === "") continue;
                     var shots = Number(val);
                     if (isNaN(shots) || shots < 1) continue;
 
-                    var existing = players[name].holes[h];
+                    var holeNum = startHole + i;
+                    var existing = players[name].holes[holeNum];
                     if (!existing || timestamp >= existing.timestamp) {
-                        players[name].holes[h] = { shots: shots, timestamp: timestamp };
+                        players[name].holes[holeNum] = { shots: shots, timestamp: timestamp };
                     }
                 }
             }
