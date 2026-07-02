@@ -113,38 +113,47 @@
             // Find columns by label
             var timestampCol = 0;
             var playerCol = -1;
-            var holeCol = -1;
-            var shotCol = -1;
+            var holeCols = {}; // maps hole number -> column index
             for (var c = 0; c < numCols; c++) {
-                var label = data.getColumnLabel(c).toLowerCase();
-                if (label.indexOf("player") >= 0 || label.indexOf("name") >= 0) playerCol = c;
-                if (label.indexOf("hole") >= 0) holeCol = c;
-                if (label.indexOf("shot") >= 0 || label.indexOf("score") >= 0) shotCol = c;
-                if (label.indexOf("timestamp") >= 0 || label.indexOf("time") >= 0) timestampCol = c;
+                var label = data.getColumnLabel(c).trim();
+                var labelLower = label.toLowerCase();
+                if (labelLower.indexOf("player") >= 0 || labelLower.indexOf("name") >= 0) playerCol = c;
+                if (labelLower.indexOf("timestamp") >= 0 || labelLower.indexOf("time") >= 0) timestampCol = c;
+                // Grid format: "Front 9 [1]", "Back 9 [10]", etc. — extract number from brackets
+                var bracketMatch = label.match(/\[(\d+)\]/);
+                if (bracketMatch) {
+                    var holeNum = parseInt(bracketMatch[1], 10);
+                    if (holeNum >= 1 && holeNum <= 18 && !holeCols[holeNum]) {
+                        holeCols[holeNum] = c;
+                    }
+                }
             }
             if (playerCol < 0) playerCol = 1;
-            if (holeCol < 0) holeCol = 2;
-            if (shotCol < 0) shotCol = numCols - 1;
 
             // Build scores: for each player+hole, keep only the most recent entry
             var players = {};
             for (var r = 0; r < numRows; r++) {
                 var name = String(data.getValue(r, playerCol));
-                var hole = Number(data.getValue(r, holeCol)) || 0;
-                var shots = Number(data.getValue(r, shotCol)) || 0;
                 var timestamp = data.getValue(r, timestampCol);
 
                 if (name === "" || name === "null" || name === "undefined") continue;
-                if (isNaN(hole) || hole < 1 || hole > 18 || hole !== Math.floor(hole)) continue;
-                if (isNaN(shots) || shots < 1) continue;
 
                 if (!players[name]) {
                     players[name] = { name: name, holes: {} };
                 }
 
-                var existing = players[name].holes[hole];
-                if (!existing || timestamp >= existing.timestamp) {
-                    players[name].holes[hole] = { shots: shots, timestamp: timestamp };
+                // Read each hole column from the grid
+                for (var h = 1; h <= NUM_HOLES; h++) {
+                    if (holeCols[h] === undefined) continue;
+                    var val = data.getValue(r, holeCols[h]);
+                    if (val === null || val === "") continue;
+                    var shots = Number(val);
+                    if (isNaN(shots) || shots < 1) continue;
+
+                    var existing = players[name].holes[h];
+                    if (!existing || timestamp >= existing.timestamp) {
+                        players[name].holes[h] = { shots: shots, timestamp: timestamp };
+                    }
                 }
             }
 
