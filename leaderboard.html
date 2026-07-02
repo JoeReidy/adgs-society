@@ -117,6 +117,7 @@
             var scoreCols = []; // ordered: [A], [B], [C]
             for (var c = 0; c < numCols; c++) {
                 var label = data.getColumnLabel(c).trim();
+                console.log("Col " + c + ": '" + label + "'");
                 var labelLower = label.toLowerCase();
                 if (labelLower.indexOf("player") >= 0 || labelLower.indexOf("name") >= 0) playerCol = c;
                 if (labelLower.indexOf("timestamp") >= 0 || labelLower.indexOf("time") >= 0) timestampCol = c;
